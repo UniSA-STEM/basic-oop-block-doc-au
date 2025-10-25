@@ -18,32 +18,43 @@ from Rig import Rig
 
 
 #temp code for checking purposes only
-new_hacker = Hacker('DastardlyBob')
+new_hacker = Hacker('DigitalMisery')
 new_asset = Asset()
-#new_rig = Rig('FirstRig')
+new_rig = Rig('First External Rig')
+
+print(new_hacker)
+print(new_asset)
+print(new_rig)
 
 if new_hacker.rig == None:
-    print('This hacker has no rig!')
+    print(f'This hacker has no rig!\n')
     new_hacker.aquire_rig()
-    print('Attempting to purchase a second rig..')
+    print(f'Attempting to purchase a second rig..\n')
     new_hacker.aquire_rig()
 else:
     print('The rig already stored is..')
     print(new_hacker.rig)
 
 if new_hacker.rig == None:
-    print('On second check... this hacker has no rig!')
+    print(f'\nOn second check... this hacker has no rig!')
     new_hacker.aquire_rig()
-    print('Attempting to purchase a second rig..')
+    print(f'\nAttempting to purchase a second rig..')
     new_hacker.aquire_rig()
 else:
-    print('On second check... the rig already stored is..')
+    print(f'\nOn second check... the rig already stored is..')
     print(new_hacker.rig)
 
-print(new_hacker)
-print(new_asset)
-#print(new_rig)
+
 new_asset.encrypt()
 
 print(new_asset)
+
+new_hacker.repair_rig()
+
+new_hacker.crypto_token += 1
+new_hacker.repair_rig()
+new_hacker.rig.broken_state = True
+new_hacker.repair_rig()
+new_hacker.repair_rig()
+
 

@@ -29,6 +29,37 @@ class Asset:
             return_string += f"[Encrypted]"
         return return_string
 
+    # MODIFIERS for this class
+    # Getters...
+    def get_description(self):
+        return {self.__description}
+
+    def get_encrypted(self):
+        return self.__encrypted
+
+    def get_consumed(self):
+        return self.__consumed
+
+    # Setters...
+    def set_description(self, description):
+        if description is not None:
+            self.__description = description
+
+    def set_encrypted(self, encryption) -> bool:
+        self.__encrypted = encryption
+
+    def set_consumed(self, consumed) -> bool:
+        if consumed is not None:
+            self.__consumed = consumed
+
+
+    # PROPERTIES to allow external access
+        description = property(get_description, set_description)
+        encrypted = property(get_encrypted, set_encrypted)
+        consumed = property(get_consumed,set_consumed)
+
+
+
     def assign_asset_type(self):
         chosen_type = random.choice(['Crypto Token', 'Data Spike', 'Removable Drive', 'Security Chip', 'Hardware Patch'])
         return chosen_type

@@ -7,6 +7,9 @@ Username: COCNJ001
 This is my own work as defined by the University's Academic Misconduct Policy.
 """
 
+# IMPORT statements needed in this class
+from Asset import Asset
+
 
 class Rig:
 
@@ -95,15 +98,18 @@ class Rig:
 
 
     # FUNCTIONS for action pertaining to the rig..
-    def current_condition(self) -> str:
+    def condition(self) -> str:
+        # If the rig is broke, condition 0 by default
         if self.__broken_state:
             condition = 0
         else:
+            # determine what is a reasonable amount of damage... none = condition 0, less than threshold = condition 1...
+            damage_tolerance = 2 + (2 * self.__upgrade_level)
             if self.__damage_counter == 0:
                 condition = 2
-            if self.__damage_counter == 1:
+            if self.__damage_counter < damage_tolerance:
                 condition = 1
-            if self.__damage_counter == 2:
+            else:
                 condition = 0
         if condition == 0:
             return_string = "Broken (Level 0)"
@@ -117,7 +123,7 @@ class Rig:
     def repaired(self):
         print(f'Attempting to repair rig {self.name}...')
         if (self.__broken_state == True or self.__damage_counter > 0):
-            self.set_broken_state(False)
+            self.__broken_state = False
             self.damage_counter = 0
             print(f"Repairs were completed on {self.name}")
             return True
@@ -128,19 +134,20 @@ class Rig:
     def upgrade(self, asset):
         self.__upgrade_level += 1
 
-    def take_hit(self, asset):
-        pass
+    def take_hit(self):
+        self.__damage_counter += 1
+        # allow damage of 2 for Level 0 rig, 4 for Level 1, 6 for Level 3 and so-on
+        damage_tolerance = 2 + (2 * self.__upgrade_level)
+        if self.__damage_counter > damage_tolerance:
+            self.__broken_state =True
+            print(f"The rig {self.name} took a hit and reached it's threshold of {damage_tolerance}, and was broken as a result.")
 
     def generate_asset(self):
-        pass
+        # This allows a (randomly-generated) asset to be added to the storage list when called
+        new_asset = Asset()
+        self.__storage.append(new_asset)
 
-    def store_asset(self, asset):
-        self.__storage.append(asset)
 
-    def release_asset(self, asset):
-        if asset is not None:
-            if asset in self.__storage:
-                self.__storage.remove(asset)
 
 
 

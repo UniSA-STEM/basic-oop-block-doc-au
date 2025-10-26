@@ -16,11 +16,10 @@ class Asset:
     # Initialisation of the asset...
     def __init__(self) -> None:
         self.__name = self.assign_asset_type()
-        # print(f'In asset name instantiation... name given as {self.__name}')
         self.__description = self.assign_asset_description()
         self.__encrypted = False
         self.__consumed = False
-        # self.__type = self.assign_asset_type()
+
 
     # __str__ definition to allow printout of asset
     def __str__(self):

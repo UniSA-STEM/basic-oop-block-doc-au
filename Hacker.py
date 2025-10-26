@@ -22,7 +22,7 @@ class Hacker:
         self.__crypto_token = 1
         self.__trace_level = 0
         self.__exposed = False
-        self.__upgraded = False
+
 
     # __str__ definition for print ing of object...
     def __str__(self) -> str:
@@ -172,35 +172,54 @@ class Hacker:
     def upgrade_rig(self):
         # Need to have a rig to upgrade it, so check
         if self.__rig != None:
-            # Need a Hardware Patch in inventory to uprade, so check for same
+            # Need a Hardware Patch in inventory to upgrade, so check for same
             has_hardware_patch = False
             if len(self.__inventory) > 0:
                 for item in self.__inventory:
                     if item.name == 'Hardware Patch':
                         has_hardware_patch = True
             if has_hardware_patch:
-                self.__upgraded = True
+                self.__rig.upgraded = True
 
-    def store_asset(self, asset, rig):
+    def store_asset(self, asset):
         if asset is not None:
-            rig.storage.append(asset)
+            self.__rig.storage.append(asset)
             self.inventory.remove(asset)
 
-    def retrieve_asset(self, asset, rig):
+    def store_asset(self):
+        for item in self.__inventory:
+            self.__rig.storage.append(item)
+            self.inventory.remove(item)
+
+    def retrieve_asset(self, asset):
         if asset is not None:
-            for item in rig.storage:
+            asset_transfer_count = 0
+            for item in self.__rig.storage:
                 if item == asset:
-                    if asset_transfer_count < 1: # so only one  first asset is retireved
+                    if asset_transfer_count < 1: # so only one /first asset is retrieved
                         self.inventory.append(asset)
-                        rig.storage.remove(asset)
+                        self.__rig.storage.remove(asset)
                         asset_transfer_count += 1
 
+    def retrieve_asset(self):
+        for item in self.__rig.storage:
+            self.inventory.append(item)
+            self.__rig.storage.remove(item)
 
-    def scan_inventory(self, asset):
-        pass
+
+    def scan_inventory(self, asset_name):
+        if asset_name is not None:
+            asset_removal_count = 0
+            for item in self.__inventory:
+                if item.name == asset_name:
+                    if asset_removal_count < 1:  # so only one /first asset is retrieved and removed
+                        print(f"An asset '{item.name}' has been found in {self.__name}'s inventory and will now be removed.")
+                        self.__inventory.remove(item)
+                        asset_removal_count += 1
+
 
     def reduce_trace(self):
-        print(f"{self.name} has done something nefarious to reduce their trace from {self.trace_level} to {self.__trace_level - 1}...")
+        print(f"{self.name} has done something nefarious to reduce their trace from {self.trace_level} to {self.__trace_level - 1} AND are no longer exposed...")
         self.__trace_level -= 1
         self.__exposed = False
 

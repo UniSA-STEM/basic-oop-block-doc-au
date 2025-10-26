@@ -11,6 +11,14 @@ This is my own work as defined by the University's Academic Misconduct Policy.
 from Rig import Rig
 from Asset import Asset
 
+
+"""
+This is the HACKER class definition, utlising imports from Asset and Rig classes.
+Most of the methods that affect the hacker's rig, using composition, are managed
+here.  Attacks and and inventory / storage management of other classes (such as rigs)
+are primarily managed here.
+"""
+
 #CLASS definition and methods
 class Hacker:
 
@@ -65,6 +73,9 @@ class Hacker:
     def set_rig(self, rig: Rig) -> None:
         self.__rig = rig
 
+    def set_trace_level(self, trace_level: int) -> None:
+        self.__trace_level = trace_level
+
     def set_crypto_token(self, token: int) -> None:
         if token is not None:
             self.__crypto_token = token
@@ -74,7 +85,7 @@ class Hacker:
     inventory = property(get_inventory, set_inventory)
     rig = property(get_rig, set_rig)
     crypto_token = property(get_crypto_token, set_crypto_token)
-    trace_level = property(get_trace_level)
+    trace_level = property(get_trace_level, set_trace_level)
     exposed = property(get_exposed, set_exposed)
 
 
@@ -200,7 +211,7 @@ class Hacker:
             print(f"{self.name} has  been exposed.  Can't do this at the moment.")
 
     def repair_rig(self):
-        print(f'In Hacker class... about to repair check... have crypto of {self.crypto_token}...')
+        print(f'About to repair the rig {self.rig.name}... have crypto of {self.crypto_token}...')
         if self.__crypto_token > 0:
             repairs_done = self.rig.repaired()
             if repairs_done:

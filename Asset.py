@@ -10,6 +10,11 @@ This is my own work as defined by the University's Academic Misconduct Policy.
 # IMPORT statements
 import random
 
+"""
+This is the ASSET class definition, utlilising no imports excluding random..
+This class is primarily for instantiation of assets and naming / typing.
+Methods that manage or move assets are primarily managed in HACKER class.
+"""
 
 class Asset:
 

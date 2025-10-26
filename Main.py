@@ -169,7 +169,7 @@ while keep_playing:
             print(f"Total assets in inventory : {len(hacker.inventory)}")
             print("\n==========\n")
 
-        # Simulating battles, in no specific order... 10 rounds..
+        # Simulating BATTLES, in no specific order... 10 rounds..
         print("\n\nBATTLE STATIONS...\n\n")
         for i in range(10):
             print(f"\nBattle round {i + 1}...")
@@ -182,10 +182,13 @@ while keep_playing:
                    hacker.launch_data_spike(opponent.rig)
             # randomly repair some rigs at round 5
             if i == 4:
+                print("\nResetting a few trace levels now...\n\n")
                 for hacker in hacker_list:
                     repair_option = random.randint(1, 10)
                     if repair_option > 5:
                         hacker.repair_rig()
+                        hacker.trace_level = 0
+                        hacker.exposed = False
 
         # List the hackers whio are now exposed....
         print("\nThe EXPOSED hackers are now...\n")

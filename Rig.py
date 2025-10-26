@@ -10,6 +10,12 @@ This is my own work as defined by the University's Academic Misconduct Policy.
 # IMPORT statements needed in this class
 from Asset import Asset
 
+"""
+This is the RIG class definition, utlising imports from Asset class.
+Most of the methods that affect the rig repair state and condition are managed
+here.  Attacks and and inventory / storage management of other classes (such as movement
+of assets between rigs) are primarily managed in HACKER class.
+"""
 
 class Rig:
 

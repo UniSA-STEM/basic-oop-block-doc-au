@@ -100,13 +100,10 @@ class Hacker:
                     print(f"The rig {other_rig.name} is now BROKEN !")
                     # Can now remove all unencrypted assets from other rig
                     self.extract_unsecured_assets(other_rig)
-
-
             else:
                 print("The attack was unsuccessful!")
         else:
             print(f"The asset is a {asset.name} and not a Data Spike.  Can't be used as such.")
-
         if self.trace_level > 4:
             print(f"{self.name} now has a trace level of {self.trace_level} and is now EXPOSED !!")
             self.exposed = True
@@ -128,21 +125,21 @@ class Hacker:
         print(f"Attempting to extract UNSECURED assets from {the_other_rig.name}...")
         if not self.__exposed:
             print(f"{self.name} isn't exposed.")
-            print(self.rig.name)
-            print(self.rig.removable_drive)
             if self.rig.removable_drive > 0:
                 print(f"{self.name}'s rig has a removable drive!")
                 # Check the attacked rig has assets to remove in its inventory
+                print(f"The other rig's storage item count is {len(the_other_rig.storage)}")
                 if len(the_other_rig.storage) > 0:
                     print(f"The attacked rig has assets.")
                     # sequentially check items in storage (other rig) for encryption status and transfer if not
-                    # keep a count of extrcations
+                    # keep a count of extractions
                     extraction_count = 0
                     # for checking - first list the current inventory of the hacker
-                    print(f"Current inventory for {self.name} is...")
-                    for item in self.inventory:
+                    print(f"Current inventory for {self.name}'s rig is...")
+                    for item in self.rig.storage:
                         print(f"item : {item}")
-                    print(f"Items in that list : {len(self.inventory)}")
+                    print(f"Items in that list : {len(self.rig.storage)}")
+                    print(f"Current inventory for {the_other_rig.name} is...")
                     for item in the_other_rig.storage:
                         print(f"item : {item}")
                         if not item.encrypted:
@@ -154,23 +151,25 @@ class Hacker:
                         if len(the_other_rig.storage) > 0:
                             for item in the_other_rig.storage:
                                 print(f"item : {item}")
-                                if item.encrypted == False:
+                                if not item.encrypted:
                                     print(f"- Found unencrypted item : {item.name}")
                                     self.inventory.append(item)
                                     print(f"- Appended {item.name}... to hacker {self.name}'s rig.")
                                     the_other_rig.storage.remove(item)
                                     extraction_count += 1
-                    if extraction_count > 0: # have removed something...
-                        self.__trace_level += 1
-                        self.rig.removable_drive -= 1
-                        print(f"{self.name} has EXTRACTED unencrypted assets, so NEW inventory is..")
-                        for items in self.inventory:
-                            print(f"item : {items}")
-                        print(f"Items in that list : {len(self.inventory)}")
-                        print(f"- For attacked rig {the_other_rig.name}, the storage is now...")
-                        for items in the_other_rig.storage:
-                            print(f"item : {items}")
-                        print(f"Items in that list : {len(the_other_rig.storage)}.")
+                            if extraction_count > 0: # have removed something...
+                                self.__trace_level += 1
+                                self.rig.removable_drive -= 1
+                                print(f"{self.name} has EXTRACTED unencrypted assets, so NEW inventory is..")
+                                for items in self.inventory:
+                                    print(f"item : {items}")
+                                print(f"Items in that list : {len(self.inventory)}")
+                                print(f"- For attacked rig {the_other_rig.name}, the storage is now...")
+                                for items in the_other_rig.storage:
+                                    print(f"item : {items}")
+                                print(f"Items in that list : {len(the_other_rig.storage)}.")
+                else:
+                    print("PROB ERROR - no itmes listed from the_otjher_rig")
             else:
                 print(f"{self.name}'s rig does not have a removable drive, so cannot proceed.")
         else:
@@ -212,12 +211,12 @@ class Hacker:
         if self.__rig != None:
             # Need a Hardware Patch in inventory to upgrade, so check for same
             has_hardware_patch = False
-            if len(self.__inventory) > 0:
-                for item in self.__inventory:
+            if len(self.inventory) > 0:
+                for item in self.inventory:
                     if item.name == 'Hardware Patch':
                         has_hardware_patch = True
             if has_hardware_patch:
-                self.__rig.upgraded = True
+                self.__rig.upgrade()
                 print(f"{self.rig.name} has been upgraded thanks to a hardware patch")
             else:
                 print("There is no hardware patch in inventory to allow an upgrade")

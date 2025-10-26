@@ -29,6 +29,13 @@ def old_tests():
 
 
 # MAIN programme
+"""
+This is the MAIN programme start point, utlising imports from Asset, Rig and
+Hacker classes.
+Although not implemented, there is option for adding a module that allow a 'game'
+whereby the user could chose actions from a menu and play with as many characters
+etc. and for as long as enjoyable.
+"""
 
 print("===========================================================================\n")
 print("Welcome to HackZone - where your digital dreams (or nightmares) come true!!\n")
@@ -40,7 +47,7 @@ while keep_playing:
     play_option = input("Press 1 to enter TEST suite, 2 to PLAY or *anything else* to EXIT : ")
     if play_option == "1":
         # testing mode
-
+        print("\n\nTESTING SUITE...\n")
         # First, instantiate hackers
         print("First, we will instantiate 5 hackers...\n")
         hacker_1 = Hacker('DigitalMisery')
@@ -110,14 +117,18 @@ while keep_playing:
         hacker_1.upgrade_rig()
 
         #OK... so add a hardware patch and re-try upgrade
-        print(f"{hacker_1.name} again trying to upgrade their rig (after getting a hardware patch)...")
+        print(f"\n{hacker_1.name} again trying to upgrade their rig (after getting a hardware patch)...")
+        patch_count = 0
         for asset in asset_list:
             if asset.name == 'Hardware Patch':
-                hacker_1.inventory.append(asset)
+                if patch_count < 1:
+                    hacker_1.inventory.append(asset)
+                    patch_count +=1
         hacker_1.upgrade_rig()
+        print(hacker_1.rig)
 
         #randomnly assign 5 assets to each hacker's inventory
-        print("\nTest...\nRandomly assigning 5 assets of the 30 to hackers' inventory...\n")
+        print("\nACTION...\nRandomly assigning 5 assets of the 30 to hackers' inventory ...\n")
         for hacker in hacker_list:
             for i in range(5):
                 option = random.randint(0, 29)
@@ -126,7 +137,23 @@ while keep_playing:
 
 
         # print out each hacker's rig's inventory
-        print("\nPrinting out each hacker's rig storage list...\n")
+        print("\nPrinting out each hacker's rig storage list (should still be empty)...\n")
+        for hacker in hacker_list:
+            print(f"{hacker.name} has...")
+            for asset in hacker.rig.storage:
+                print(asset)
+            print("\n==========\n")
+
+        # randomnly assign 5 assets to each hacker's rig's storage
+        print("\nACTION...\nRandomly assigning 5 assets of the 30 to hackers' rig's storage ...\n")
+        for hacker in hacker_list:
+            for i in range(5):
+                option = random.randint(0, 29)
+                asset = asset_list[option]
+                hacker.rig.storage.append(asset)
+
+        # print out each hacker's rig's inventory
+        print("\nPrinting out each hacker's rig storage list (should still be empty)...\n")
         for hacker in hacker_list:
             print(f"{hacker.name} has...")
             for asset in hacker.rig.storage:
@@ -134,14 +161,16 @@ while keep_playing:
             print("\n==========\n")
 
         # print out each hacker's  inventory
-        print("\nPrinting out each hacker's own inventory...\n")
+        print("\nAnd printing out each hacker's own inventory...\n")
         for hacker in hacker_list:
             print(f"{hacker.name} has...")
             for asset in hacker.inventory:
                 print(asset)
+            print(f"Total assets in inventory : {len(hacker.inventory)}")
             print("\n==========\n")
 
         # Simulating battles, in no specific order... 10 rounds..
+        print("\n\nBATTLE STATIONS...\n\n")
         for i in range(10):
             print(f"\nBattle round {i + 1}...")
             for hacker in hacker_list:
@@ -151,6 +180,12 @@ while keep_playing:
                 opponent = hacker_list[opponent_index]
                 if hacker != opponent:  # check we aren't battling ourself...
                    hacker.launch_data_spike(opponent.rig)
+            # randomly repair some rigs at round 5
+            if i == 4:
+                for hacker in hacker_list:
+                    repair_option = random.randint(1, 10)
+                    if repair_option > 5:
+                        hacker.repair_rig()
 
         # List the hackers whio are now exposed....
         print("\nThe EXPOSED hackers are now...\n")
@@ -242,6 +277,6 @@ while keep_playing:
         # will allow interactive play
         print("This COULD be implemented later for interactive play.\n")
     else:
-        print("\n\n`So long, and thanks for checking out my work!\n")
+        print("\n\nSo long, and thanks for checking out my work!\n")
         keep_playing = False
 

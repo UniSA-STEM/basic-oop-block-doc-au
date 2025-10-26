@@ -108,7 +108,7 @@ class Rig:
             damage_tolerance = 2 + (2 * self.__upgrade_level)
             if self.__damage_counter == 0:
                 condition = 2
-            if self.__damage_counter < damage_tolerance:
+            elif self.__damage_counter < damage_tolerance:
                 condition = 1
             else:
                 condition = 0
@@ -134,6 +134,7 @@ class Rig:
 
     def upgrade(self):
         self.__upgrade_level += 1
+        self.condition()
 
     def take_hit(self):
         self.__damage_counter += 1

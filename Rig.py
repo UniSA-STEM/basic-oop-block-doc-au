@@ -132,7 +132,7 @@ class Rig:
             print(f"No repair is needed for rig {self.name}.")
             return False
 
-    def upgrade(self, asset):
+    def upgrade(self):
         self.__upgrade_level += 1
 
     def take_hit(self):

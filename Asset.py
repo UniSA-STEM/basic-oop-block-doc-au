@@ -57,8 +57,7 @@ class Asset:
 
     # PROPERTIES to allow external access
     description = property(get_description, set_description)
-    encrypted = property(get_encrypted, set_encrypted)
-    consumed = property(get_consumed,set_consumed)
+    encrypted: property = property(get_encrypted, set_encrypted)
     name = property(get_name)
 
 

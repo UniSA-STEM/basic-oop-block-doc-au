@@ -125,38 +125,56 @@ class Hacker:
 
     def extract_unsecured_assets(self, the_other_rig):
         # Ensure not exposed and have a removable drive before preoceeding
-        print(f"Attempting to extract assets from {the_other_rig.name}...")
+        print(f"Attempting to extract UNSECURED assets from {the_other_rig.name}...")
         if not self.__exposed:
             print(f"{self.name} isn't exposed.")
-            if self.__rig.removable_drive > 0:
+            print(self.rig.name)
+            print(self.rig.removable_drive)
+            if self.rig.removable_drive > 0:
                 print(f"{self.name}'s rig has a removable drive!")
                 # Check the attacked rig has assets to remove in its inventory
-                print(the_other_rig.name)
-                print("The other rig's type... ")
-                print(type(the_other_rig))
-                print("And storage...")
-                print(type(the_other_rig.storage))
-                print(len(the_other_rig.storage))
                 if len(the_other_rig.storage) > 0:
                     print(f"The attacked rig has assets.")
                     # sequentially check items in storage (other rig) for encryption status and transfer if not
-                    print("Actually extracting unencrypted assets...\n")
+                    # keep a count of extrcations
                     extraction_count = 0
+                    # for checking - first list the current inventory of the hacker
+                    print(f"Current inventory for {self.name} is...")
+                    for item in self.inventory:
+                        print(f"item : {item}")
+                    print(f"Items in that list : {len(self.inventory)}")
                     for item in the_other_rig.storage:
-                        if item.encrypted == False:
+                        print(f"item : {item}")
+                        if not item.encrypted:
+                            print(f"- Found unencrypted item : {item.name}")
                             self.inventory.append(item)
-                            print(f"Appended {item.name}... to hacker's rig\n")
+                            print(f"- Appended {item.name}... to hacker {self.name}'s rig.")
                             the_other_rig.storage.remove(item)
                             extraction_count += 1
-                            print("Have extracted an item...")
+                        if len(the_other_rig.storage) > 0:
+                            for item in the_other_rig.storage:
+                                print(f"item : {item}")
+                                if item.encrypted == False:
+                                    print(f"- Found unencrypted item : {item.name}")
+                                    self.inventory.append(item)
+                                    print(f"- Appended {item.name}... to hacker {self.name}'s rig.")
+                                    the_other_rig.storage.remove(item)
+                                    extraction_count += 1
                     if extraction_count > 0: # have removed something...
                         self.__trace_level += 1
                         self.rig.removable_drive -= 1
-                        print(f"{self.name} has EXTRACTED unencrypted assets")
+                        print(f"{self.name} has EXTRACTED unencrypted assets, so NEW inventory is..")
+                        for items in self.inventory:
+                            print(f"item : {items}")
+                        print(f"Items in that list : {len(self.inventory)}")
+                        print(f"- For attacked rig {the_other_rig.name}, the storage is now...")
+                        for items in the_other_rig.storage:
+                            print(f"item : {items}")
+                        print(f"Items in that list : {len(the_other_rig.storage)}.")
             else:
                 print(f"{self.name}'s rig does not have a removable drive, so cannot proceed.")
         else:
-            print(f"{self.name} has been exposed.  Can't do this at the moment.")
+            print(f"{self.name} has been exposed.  Can't perform this activity at the moment.")
 
     def encrypt_asset(self, asset):
         if self.__exposed == False:
@@ -200,6 +218,11 @@ class Hacker:
                         has_hardware_patch = True
             if has_hardware_patch:
                 self.__rig.upgraded = True
+                print(f"{self.rig.name} has been upgraded thanks to a hardware patch")
+            else:
+                print("There is no hardware patch in inventory to allow an upgrade")
+        else:
+            print(f"{self.name} doesn't have a rig to upgrade!.  Can't do this at the moment.")
 
     def store_asset(self, asset):
         if asset is not None:
@@ -239,8 +262,9 @@ class Hacker:
 
 
     def reduce_trace(self):
-        print(f"{self.name} has done something nefarious to reduce their trace from {self.trace_level} to {self.__trace_level - 1} AND are no longer exposed...")
-        self.__trace_level -= 1
+        print(f"{self.name} has done something nefarious to reduce their trace from {self.trace_level} and are no longer exposed...")
+        if self.__trace_level > 0:
+            self.__trace_level -= 1
         self.__exposed = False
 
 

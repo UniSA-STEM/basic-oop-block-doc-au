@@ -22,13 +22,14 @@ class Rig:
         self.__data_spikes = 2
         self.__removable_drive = 1
         self.__upgrade_level = 0
+        self.__condition = self.condition()
 
     # define __str__ for printout of rig specs...
     def __str__(self) -> str:
         demarcation_line = "=" * 30 + "\n"
         return_string = demarcation_line
         return_string += f"Rig name: {self.__name}\n"
-        return_string += f"Condition: {self.current_condition()}\n"
+        return_string += f"Condition: {self.__condition}\n"
         return_string += f"Upgrade level: {self.__upgrade_level}\n"
         return_string += f"Stored assets: {self.__storage}\n"
         return_string += demarcation_line
@@ -114,7 +115,7 @@ class Rig:
         if condition == 0:
             return_string = "Broken (Level 0)"
         elif condition == 1:
-            return_string = "Borderline (Level 1)"
+            return_string = "Intermediate (Level 1)"
         else:
             return_string = "Pristine (Level 2)"
         return return_string

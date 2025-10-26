@@ -18,7 +18,7 @@ class Asset:
         self.__name = self.assign_asset_type()
         self.__description = self.assign_asset_description()
         self.__encrypted = False
-        self.__consumed = False
+
 
 
     # __str__ definition to allow printout of asset
@@ -30,6 +30,9 @@ class Asset:
 
     # MODIFIERS for this class
     # Getters...
+    def get_name(self):
+        return self.__name
+
     def get_description(self):
         return {self.__description}
 
@@ -53,12 +56,13 @@ class Asset:
 
 
     # PROPERTIES to allow external access
-        description = property(get_description, set_description)
-        encrypted = property(get_encrypted, set_encrypted)
-        consumed = property(get_consumed,set_consumed)
+    description = property(get_description, set_description)
+    encrypted = property(get_encrypted, set_encrypted)
+    consumed = property(get_consumed,set_consumed)
+    name = property(get_name)
 
 
-    # Internal function, used on initialisation, to set the type (name) of the asset randomly
+    # Internal functions, used on initialisation, to set the type (name) of the asset randomly
     def assign_asset_type(self):
         chosen_type = random.choice(['Crypto Token', 'Data Spike', 'Removable Drive', 'Security Chip', 'Hardware Patch'])
         return chosen_type

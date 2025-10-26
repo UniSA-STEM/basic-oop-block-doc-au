@@ -61,14 +61,14 @@ class Rig:
             self.__name = name
 
     def set_damage_counter(self, damage_counter: int) -> None:
-        if damage_counter >0:
+        if damage_counter >= 0:
             self.__damage_counter = damage_counter
 
     def set_broken_state(self, broken_state: bool) -> None:
         self.__broken_state = broken_state
 
     def set_data_spikes(self, data_spikes: int) -> None:
-        if data_spikes > 0:
+        if data_spikes >= 0:
             self.__data_spikes = data_spikes
 
     def set_storage(self, item_to_add) -> list:
@@ -80,7 +80,7 @@ class Rig:
             self.__removable_drive = removable_drive
 
     def set_upgrade_level(self, upgrade_level) -> int:
-        if upgrade_level > 0:
+        if upgrade_level >= 0:
             self.__upgrade_level = upgrade_level
 
 
@@ -115,18 +115,18 @@ class Rig:
 
 
     def repaired(self):
-        print('Attempting to repair rig...')
+        print(f'Attempting to repair rig {self.name}...')
         if (self.__broken_state == True or self.__damage_counter > 0):
             self.set_broken_state(False)
             self.damage_counter = 0
-            print(f"  In Rig class... repairs were done to {self.__name}")
+            print(f"Repairs were completed on {self.name}")
             return True
         else:
             print(f"No repair is needed for rig {self.name}.")
             return False
 
-    def upgraded(self, asset):
-        pass
+    def upgrade(self, asset):
+        self.__upgrade_level += 1
 
     def take_hit(self, asset):
         pass

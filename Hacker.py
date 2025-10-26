@@ -22,9 +22,9 @@ class Hacker:
         self.__crypto_token = 1
         self.__trace_level = 0
         self.__exposed = False
+        self.__upgraded = False
 
     # __str__ definition for print ing of object...
-
     def __str__(self) -> str:
         return_string = f"\nHacker name: {self.__name}\n"
         return_string += f"Hacker's trace level: {self.__trace_level}\n"
@@ -79,23 +79,25 @@ class Hacker:
 
 
 
-    # Need functions per spec... TBC
+    # Needed functions per spec...
 
-    def launch_data_spike(self, asset, other_rig):
-        #Announcve the attack
-        print(f"{self.__name} is attacking {other_rig} with {asset}...")
-        # Check if the asset is a data spike
-        if asset.name == 'Data Spike':
-            # Check if there is a rig for the hacker
-            if other_rig is not None:
-                # If there is a rig, does it have a data spike?
-                if self.__rig.data_spikes > 0:
-                    # If all good... launch the attack and consume a dataspike
-                    self.__trace_level += 1
-                    self.__rig.data_spikes -= 1
-                    other_rig.damage_counter += 1
-                else:
-                    print("The attack was unsuccessful!")
+    def launch_data_spike(self, other_rig):
+        #Announce the attack
+        print(f"{self.__name} is attacking {other_rig}...")
+        # Check if there is a rig for the hacker
+        if other_rig is not None:
+            # Does my rig have a data spike?
+            if self.__rig.data_spikes > 0:
+                # As all good... launch the attack and consume a dataspike
+                self.__trace_level += 1
+                self.__rig.data_spikes -= 1
+                other_rig.damage_counter += 1
+                # Determine if can extract assets from damaged rig
+                if other_rig.damage_counter == 0:
+                    # Can now remove all unencrypted assets from other rig
+                    self.extract_unsecured_assets(other_rig)
+            else:
+                print("The attack was unsuccessful!")
         else:
             print(f"The asset is a {asset.name} and not a Data Spike.  Can't be used as such.")
 
@@ -104,19 +106,61 @@ class Hacker:
             self.exposed = True
 
     def aquire_rig(self):
-        if self.__crypto_token > 0:
-            self.__rig = Rig('The Emperors New Rig')
-            print('The Emperors New Rig has been aquired...')
-            print(self.__rig)
-            self.__crypto_token -= 1
+        if self.__exposed == False:
+            if self.__crypto_token > 0:
+                self.__rig = Rig('The Emperors New Rig')
+                print('The Emperors New Rig has been aquired...')
+                print(self.__rig)
+                self.__crypto_token -= 1
+            else:
+                print('Sadly you have insufficient funds to purchase a rig!')
         else:
-            print('Sadly you have insufficient funds to purchase a rig!')
+            print(f"{self.name} has  been exposed.  Can't do this at the moment.")
 
-    def extract_assets(self, asset):
-        pass
+    def extract_unsecured_assets(self, other_rig):
+        # Ensure not exposed and have a removable drive before preoceeding
+        if self.__exposed == False:
+            if self.rig.removable_drive > 0:
+                # Check the attacked rig has assets to remove in it's inventory
+                if len(other_rig.storage) > 0:
+                    # sequentially check items in storage (other rig) for encryption status and transfer if not
+                    extraction_count = 0
+                    for item in other_rig.storage:
+                        if item.encrypted == False:
+                            self.__inventory.append(item)
+                            other_rig.storage.remove(item)
+                            extraction_count += 1
+                    if extraction_count > 0: # have removed something...
+                        self.__trace_level += 1
+                        self.rig.removable_drive -= 1
+            else:
+                print(f"{self.name}'s rig does not have a removable drive, so cannot proceed.")
+        else:
+            print(f"{self.name} has  been exposed.  Can't do this at the moment.")
 
     def encrypt_asset(self, asset):
-        pass
+        if self.__exposed == False:
+            has_security_chip = False
+            if len(self.__inventory) > 0:
+                for item in self.__inventory:
+                    if item.name == 'Security Chip':
+                        has_security_chip = True
+            if has_security_chip:
+                asset.encrypt()
+        else:
+            print(f"{self.name} has  been exposed.  Can't do this at the moment.")
+
+    def decrypt_asset(self, asset):
+        if self.__exposed == False:
+            has_security_chip = False
+            if len(self.__inventory) > 0:
+                for item in self.__inventory:
+                    if item.name == 'Security Chip':
+                        has_security_chip = True
+            if has_security_chip:
+                asset.decrypt()
+        else:
+            print(f"{self.name} has  been exposed.  Can't do this at the moment.")
 
     def repair_rig(self):
         print(f'In Hacker class... about to repair check... have crypto of {self.crypto_token}...')
@@ -125,18 +169,40 @@ class Hacker:
             if repairs_done:
                 self.__crypto_token -= 1
 
-    def upgrade_rig(self, rig):
-        pass
+    def upgrade_rig(self):
+        # Need to have a rig to upgrade it, so check
+        if self.__rig != None:
+            # Need a Hardware Patch in inventory to uprade, so check for same
+            has_hardware_patch = False
+            if len(self.__inventory) > 0:
+                for item in self.__inventory:
+                    if item.name == 'Hardware Patch':
+                        has_hardware_patch = True
+            if has_hardware_patch:
+                self.__upgraded = True
 
     def store_asset(self, asset, rig):
-        pass
+        if asset is not None:
+            rig.storage.append(asset)
+            self.inventory.remove(asset)
 
     def retrieve_asset(self, asset, rig):
-        pass
+        if asset is not None:
+            for item in rig.storage:
+                if item == asset:
+                    if asset_transfer_count < 1: # so only one  first asset is retireved
+                        self.inventory.append(asset)
+                        rig.storage.remove(asset)
+                        asset_transfer_count += 1
+
 
     def scan_inventory(self, asset):
         pass
 
+    def reduce_trace(self):
+        print(f"{self.name} has done something nefarious to reduce their trace from {self.trace_level} to {self.__trace_level - 1}...")
+        self.__trace_level -= 1
+        self.__exposed = False
 
 
 

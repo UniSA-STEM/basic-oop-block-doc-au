@@ -12,49 +12,22 @@ This is my own work as defined by the University's Academic Misconduct Policy.
 from Asset import Asset
 from Hacker import Hacker
 from Rig import Rig
+import Tests
+
 
 # MAIN programme
 
-
-
-#temp code for checking purposes only
-new_hacker = Hacker('DigitalMisery')
-new_asset = Asset()
-new_rig = Rig('First External Rig')
-
-print(new_hacker)
-print(new_asset)
-print(new_rig)
-
-if new_hacker.rig == None:
-    print(f'This hacker has no rig!\n')
-    new_hacker.aquire_rig()
-    print(f'Attempting to purchase a second rig..\n')
-    new_hacker.aquire_rig()
-else:
-    print('The rig already stored is..')
-    print(new_hacker.rig)
-
-if new_hacker.rig == None:
-    print(f'\nOn second check... this hacker has no rig!')
-    new_hacker.aquire_rig()
-    print(f'\nAttempting to purchase a second rig..')
-    new_hacker.aquire_rig()
-else:
-    print(f'\nOn second check... the rig already stored is..')
-    print(new_hacker.rig)
-
-
-new_asset.encrypt()
-
-print(new_asset)
-
-new_hacker.repair_rig()
-
-new_hacker.crypto_token += 1
-new_hacker.repair_rig()
-new_hacker.rig.broken_state = True
-new_hacker.repair_rig()
-new_hacker.repair_rig()
-
+print("Welcome to HackZone - where your digital dreams (or nightmares) come true!!\n")
+keep_playing = True
+while keep_playing:
+    play_option = input("Press 1 to enter TEST suite, 2 to PLAY or *anything else* to EXIT : ")
+    if play_option == "1":
+        # testing mode
+        Tests.testing()
+    elif play_option == "2":
+        # will allow interactive play
+        print("This will be implemented later for interactive play.\n")
+    else:
+        print("So long, and thanks for checking out my work!\n")
+        keep_playing = False
 

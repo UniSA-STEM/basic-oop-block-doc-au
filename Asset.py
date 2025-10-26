@@ -59,14 +59,13 @@ class Asset:
         consumed = property(get_consumed,set_consumed)
 
 
-
+    # Internal function, used on initialisation, to set the type (name) of the asset randomly
     def assign_asset_type(self):
         chosen_type = random.choice(['Crypto Token', 'Data Spike', 'Removable Drive', 'Security Chip', 'Hardware Patch'])
         return chosen_type
 
-    #On instantiation, a description will be made which fits the assets name (type)
+    #On instantiation of object, a description will be made which fits the assets name (type)
     def assign_asset_description(self):
-        # print(f'In asset class def... asset name passed-in as {self.__name}')
         if self.__name == 'Crypto Token':
             description = "This is a crypto-token, used to acquire or repair rigs."
         if self.__name == 'Data Spike':
@@ -77,7 +76,7 @@ class Asset:
             description = "This is a security chip, used to encrypt or decrypt assets."
         if self.__name == 'Hardware Patch':
             description = "This is a hardware patch, used to upgrade rigs."
-        # print(f'At end of description def, the name is {self.__name} and the definiton is {description}')
+        # Return the appropriate name-matched (type-matched) description
         return description
 
     def encrypt(self):

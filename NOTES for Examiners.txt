@@ -1,0 +1,24 @@
+NOTES for Examiners....
+
+User = Neil Cochrane
+Date of submission = Sunday 26 October 2025 (extension granted)
+
+Username = cocnj001
+Student id No. = 110484750
+
+
+GitHub Classroom link:  https://github.com/UniSA-STEM/basic-oop-block-doc-au
+
+Video file = cocnj001_video_overview.mp4
+
+Python files....
+Asset.py
+Hacker.py
+Main.py
+Rig.py
+
+
+
+Many thanks,
+
+Neil Cochrane 
